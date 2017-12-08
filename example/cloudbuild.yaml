@@ -1,0 +1,11 @@
+steps:
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: '/bin/bash'
+  args: ['-c', 'apt-get -qq update && apt-get -qq -y install jq zip npm && npm run cloudbuild']
+  env:
+  - 'DEBIAN_FRONTEND=noninteractive'
+  - 'PROJECT_ID=$PROJECT_ID'
+  - 'BRANCH_NAME=$BRANCH_NAME'
+  - 'TAG_NAME=$TAG_NAME'

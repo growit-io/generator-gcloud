@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -o errexit
+
+dir=`mktemp -d`
+
+(cd $dir && yo gcloud <&-)
+
+rm -Rf example
+cp -R $dir example
+rm -R $dir

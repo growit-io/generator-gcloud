@@ -1,0 +1,11 @@
+imports:
+- path: node_modules/@growit-io/google-cloud-platform-types/helpers/common.py
+  name: helpers/common.py
+- path: node_modules/@growit-io/google-cloud-platform-types/storage/regional-bucket.py
+  name: regional-bucket.py
+
+resources:
+- name: regional-bucket
+  type: regional-bucket.py
+  properties:
+    name: content
