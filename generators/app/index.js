@@ -13,7 +13,7 @@ module.exports = class extends Generator {
     const prompts = [
       {
         type: 'confirm',
-        name: 'generateCloudbuildYaml',
+        name: 'cloudbuild',
         message: 'Would you like to generate a cloudbuild.yaml?',
         default: true
       }
@@ -34,14 +34,18 @@ module.exports = class extends Generator {
         if (Object.prototype.hasOwnProperty.call(prompts, x)) {
           let p = prompts[x];
           this.props[p.name] = p.default;
+          this.config.set(p.name, p.default);
         }
       }
     });
   }
 
   writing() {
+    // Follow best practice to always generate a .yo-rc.json
+    this.config.save();
+
     var files = ['package.json', 'config.yaml'];
-    if (this.props.generateCloudbuildYaml) {
+    if (this.props.cloudbuild) {
       files.push('cloudbuild.yaml');
     }
     for (var x in files) {
