@@ -1,6 +1,6 @@
 {
   "name": "generator-gcloud",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description":
     "Yeoman generator generating projects for Google Cloud Platform",
   "homepage": "https://github.com/growit-io/generator-gcloud",
