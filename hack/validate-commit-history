@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo 'TODO: edit hack/validate-commit-history to enable it'
-exit 0
-
 code=0
 initialCommitSHA=$(git rev-list HEAD | tail -1)
 
 for sha in $(git rev-list HEAD); do
+  # Ignore the initial commit
   if [[ $sha == $initialCommitSHA ]]; then
     continue
   fi
 
   msg="$(git log -1 --format='%B' $sha)"
-  err="$(validate-commit-msg "$msg" <&- 2>&1 || true)"
+  err="$(npm run -s validate-commit-msg -- "$msg" <&- 2>&1 || true)"
   if [[ -n $err ]]; then
     code=1
     echo "$sha: $err"
