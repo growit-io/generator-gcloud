@@ -3,7 +3,8 @@ language: node_js
 node_js:
   - 7
   - 6
-  - 4
+# FIXME: build-example fails because generator-gcloud is not istalled
+# - 4
 
 script: 'npm run ci'
 
