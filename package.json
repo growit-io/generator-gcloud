@@ -13,7 +13,7 @@
   "main": "generators/app/index.js",
   "keywords": ["google-cloud-platform", "gcloud", "yeoman-generator"],
   "devDependencies": {
-    "eslint": "^4.1.0",
+    "eslint": "^4.13.0",
     "eslint-config-prettier": "^2.4.0",
     "eslint-config-xo": "^0.18.2",
     "eslint-plugin-prettier": "^2.2.0",
