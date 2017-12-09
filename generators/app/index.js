@@ -61,10 +61,12 @@ module.exports = class extends Generator {
     // Follow best practice to always generate a .yo-rc.json
     this.config.save();
 
-    var files = ['package.json', 'config.yaml'];
+    var files = ['README.md', 'package.json', 'config.yaml'];
+
     if (this.props.cloudbuild) {
       files.push('cloudbuild.yaml');
     }
+
     for (var x in files) {
       if (Object.prototype.hasOwnProperty.call(files, x)) {
         var name = files[x];

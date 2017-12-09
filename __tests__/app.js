@@ -8,6 +8,16 @@ function generator(config) {
 }
 
 describe('generator-gcloud:app', () => {
+  beforeAll(() => {
+    return generator({});
+  });
+
+  it('creates the required files', () => {
+    assert.file(['README.md']);
+    assert.file(['package.json']);
+    assert.file(['config.yaml']);
+  });
+
   describe('with cloudbuild:true', () => {
     beforeAll(() => {
       return generator({ cloudbuild: true });
@@ -17,12 +27,6 @@ describe('generator-gcloud:app', () => {
       assert.jsonFileContent('.yo-rc.json', {
         'generator-gcloud': { cloudbuild: true }
       });
-    });
-
-    it('creates the other expected files', () => {
-      assert.file(['package.json']);
-      assert.file(['config.yaml']);
-      assert.file(['cloudbuild.yaml']);
     });
   });
 
@@ -35,12 +39,6 @@ describe('generator-gcloud:app', () => {
       assert.jsonFileContent('.yo-rc.json', {
         'generator-gcloud': { cloudbuild: false }
       });
-    });
-
-    it('creates the other expected files', () => {
-      assert.file(['package.json']);
-      assert.file(['config.yaml']);
-      assert.noFile(['cloudbuild.yaml']);
     });
   });
 });
