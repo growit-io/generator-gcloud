@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo 'TODO: edit hack/validate-commit-history to enable it'
-exit 0
-
 code=0
 initialCommitSHA=$(git rev-list HEAD | tail -1)
 
 for sha in $(git rev-list HEAD); do
+  # Ignore the initial commit
   if [[ $sha == $initialCommitSHA ]]; then
     continue
   fi
