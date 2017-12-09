@@ -10,28 +10,37 @@ module.exports = class extends Generator {
     // Have Yeoman greet the user.
     this.log(yosay('Welcome to the ' + chalk.red('gcloud') + ' project generator!'));
 
+    var self = this;
     const answer = function(name, def) {
-      var value = this.config.get(name);
+      var value = self.config.get(name);
       if (value === undefined) {
         return def;
       }
       return value;
     };
+    // Load .yo-rc.json
+    this.config.getAll();
 
     const prompts = [
       {
         type: 'confirm',
         name: 'cloudbuild',
         message: 'Would you like to generate a cloudbuild.yaml?',
-        default: answer('cloudbuild', false)
+        default: answer('cloudbuild', true)
       }
     ];
 
     // Prompt the user for answers if stdin is a terminal
     if (process.stdin.isTTY) {
       return this.prompt(prompts).then(props => {
-        // To access props later use this.props.someAnswer;
+        // Save the answers
         this.props = props;
+        for (var x in prompts) {
+          if (Object.prototype.hasOwnProperty.call(prompts, x)) {
+            var p = prompts[x];
+            this.config.set(p.name, this.props[p.name]);
+          }
+        }
       });
     }
 
@@ -40,10 +49,9 @@ module.exports = class extends Generator {
       this.props = props;
       for (var x in prompts) {
         if (Object.prototype.hasOwnProperty.call(prompts, x)) {
-          let p = prompts[x];
-          // Expand all possible answers in the generated .yo-rc.yaml
+          var p = prompts[x];
           this.props[p.name] = p.default;
-          this.config.set(p.name, p.default);
+          this.config.set(p.name, this.config.get(p.name));
         }
       }
     });
