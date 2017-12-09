@@ -15,7 +15,7 @@ module.exports = class extends Generator {
         type: 'confirm',
         name: 'cloudbuild',
         message: 'Would you like to generate a cloudbuild.yaml?',
-        default: true
+        default: this.config.get('cloudbuild')
       }
     ];
 
