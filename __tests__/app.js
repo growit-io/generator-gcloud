@@ -14,7 +14,7 @@ describe('generator-gcloud:app', () => {
     });
 
     it('creates the expected files', () => {
-      assert.file(['.yo-rc.json']);
+      assert.jsonFileContent('.yo-rc.json', { 'generator-gcloud': { cloudbuild: true } });
       assert.file(['package.json']);
       assert.file(['config.yaml']);
       assert.file(['cloudbuild.yaml']);
@@ -27,7 +27,7 @@ describe('generator-gcloud:app', () => {
     });
 
     it('creates the expected files', () => {
-      assert.file(['.yo-rc.json']);
+      assert.fileContent('.yo-rc.json', 'xxx');
       assert.file(['package.json']);
       assert.file(['config.yaml']);
       assert.noFile(['cloudbuild.yaml']);

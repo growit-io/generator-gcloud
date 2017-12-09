@@ -10,12 +10,20 @@ module.exports = class extends Generator {
     // Have Yeoman greet the user.
     this.log(yosay('Welcome to the ' + chalk.red('gcloud') + ' project generator!'));
 
+    const answer = function(name, def) {
+      var value = this.config.get(name);
+      if (value === undefined) {
+        return def;
+      }
+      return value;
+    };
+
     const prompts = [
       {
         type: 'confirm',
         name: 'cloudbuild',
         message: 'Would you like to generate a cloudbuild.yaml?',
-        default: this.config.get('cloudbuild')
+        default: answer('cloudbuild', false)
       }
     ];
 
@@ -33,6 +41,7 @@ module.exports = class extends Generator {
       for (var x in prompts) {
         if (Object.prototype.hasOwnProperty.call(prompts, x)) {
           let p = prompts[x];
+          // Expand all possible answers in the generated .yo-rc.yaml
           this.props[p.name] = p.default;
           this.config.set(p.name, p.default);
         }
