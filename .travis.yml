@@ -1,0 +1,24 @@
+language: node_js
+
+node_js:
+  - 7
+  - 6
+# FIXME: build-example fails because generator-gcloud is not istalled
+# - 4
+
+script: 'npm run ci'
+
+before_install:
+  - npm i -g makeshift && makeshift -s @growit-io -r registry.npmjs.org
+
+deploy:
+  provider: npm
+  email: ustuehler@growit.io
+  api_key: $NPM_TOKEN
+  on:
+    tags: true
+
+notifications:
+  email:
+    on_success: never # default: change
+    on_failure: change # default: always

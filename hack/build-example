@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o pipefail
+
+cd "$(dirname "$0")/.."
+
+dir=`mktemp -d`
+
+cp example/.yo-rc.json $dir
+(cd $dir && yo gcloud <&-)
+
+rm -Rf example
+cp -R $dir example
+rm -R $dir
