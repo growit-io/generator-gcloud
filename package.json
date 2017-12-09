@@ -37,8 +37,7 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "ci":
-      "npm install --only=dev && npm run precommit && npm run test && npm run prerelease",
+    "ci": "npm run precommit && npm run test && npm run prerelease",
     "precommit": "lint-staged",
     "pretest": "eslint .",
     "test": "jest",
