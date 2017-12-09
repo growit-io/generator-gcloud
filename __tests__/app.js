@@ -13,8 +13,13 @@ describe('generator-gcloud:app', () => {
       return generator({ cloudbuild: true });
     });
 
-    it('creates the expected files', () => {
-      assert.file(['.yo-rc.json']);
+    it('creates .yo-rc.yml with cloudbuild:true', () => {
+      assert.jsonFileContent('.yo-rc.json', {
+        'generator-gcloud': { cloudbuild: true }
+      });
+    });
+
+    it('creates the other expected files', () => {
       assert.file(['package.json']);
       assert.file(['config.yaml']);
       assert.file(['cloudbuild.yaml']);
@@ -26,8 +31,13 @@ describe('generator-gcloud:app', () => {
       return generator({ cloudbuild: false });
     });
 
-    it('creates the expected files', () => {
-      assert.file(['.yo-rc.json']);
+    it('creates .yo-rc.yml with cloudbuild:false', () => {
+      assert.jsonFileContent('.yo-rc.json', {
+        'generator-gcloud': { cloudbuild: false }
+      });
+    });
+
+    it('creates the other expected files', () => {
       assert.file(['package.json']);
       assert.file(['config.yaml']);
       assert.noFile(['cloudbuild.yaml']);
