@@ -36,10 +36,13 @@
     "testEnvironment": "node"
   },
   "scripts": {
+    "ci":
+      "npm install --only=dev && npm run precommit && npm run test && npm run prerelease",
     "precommit": "lint-staged",
     "pretest": "eslint .",
     "test": "jest",
-    "release": "hack/build-example && standard-version",
+    "prerelease": "hack/validate-commit-history && hack/build-example",
+    "release": "npm run prerelease && standard-version",
     "prepublishOnly": "nsp check"
   },
   "lint-staged": {

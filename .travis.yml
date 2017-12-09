@@ -5,7 +5,7 @@ node_js:
   - 6
   - 4
 
-#script: 'npm run ci'
+script: 'npm run ci'
 
 before_install:
   - npm i -g makeshift && makeshift -s @growit-io -r registry.npmjs.org
