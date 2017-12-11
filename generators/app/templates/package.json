@@ -2,8 +2,8 @@
   "version": "0.0.0",
   "description": "Google Cloud Platform project",
   "dependencies": {
-    "@growit-io/gcloud-project": ">= 0.0.2",
-    "@growit-io/google-cloud-platform-types": "0.2.x"
+    "@growit-io/gcloud-project": ">= 0.0.3",
+    "@growit-io/google-cloud-platform-types": ">= 0.2.5"
   },
   "scripts": {
     "project": "gcloud-project",
