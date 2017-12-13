@@ -11,7 +11,7 @@ A [Yeoman] Generator for [Google Cloud Platform] projects. The source contains a
 - None.
 
 ### Missing Features
-- Some.
+- Dynamic generation of `config.yaml`. Currently it's a static template.
 
 ## Known Issues
 - The generated `package.json` lacks required fields like `name`.
