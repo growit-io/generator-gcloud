@@ -3,32 +3,28 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 
+// The tty module provides isTTY on stdin and other streams
 require('tty');
 
+const prompts = [
+  {
+    type: 'confirm',
+    name: 'cloudbuild',
+    message: 'Would you like to generate a cloudbuild.yaml?',
+    default: true,
+    store: true
+  }
+];
+
 module.exports = class extends Generator {
-  prompting() {
-    // Have Yeoman greet the user.
-    this.log(yosay('Welcome to the ' + chalk.red('gcloud') + ' project generator!'));
-
-    var self = this;
-    const answer = function(name, def) {
-      var value = self.config.get(name);
-      if (value === undefined) {
-        return def;
-      }
-      return value;
-    };
-    // Load .yo-rc.json
+  initializing() {
+    // Load .yo-rc.json.
     this.config.getAll();
+  }
 
-    const prompts = [
-      {
-        type: 'confirm',
-        name: 'cloudbuild',
-        message: 'Would you like to generate a cloudbuild.yaml?',
-        default: answer('cloudbuild', true)
-      }
-    ];
+  prompting() {
+    // Have Yeoman greet the user
+    this.log(yosay('Welcome to the ' + chalk.red('gcloud') + ' project generator!'));
 
     // Prompt the user for answers if stdin is a terminal
     if (process.stdin.isTTY) {
@@ -57,10 +53,12 @@ module.exports = class extends Generator {
     });
   }
 
-  writing() {
+  configuring() {
     // Follow best practice to always generate a .yo-rc.json
     this.config.save();
+  }
 
+  writing() {
     var files = ['README.md', 'package.json', 'config.yaml'];
 
     if (this.props.cloudbuild) {
