@@ -1,5 +1,5 @@
-# Package Specification
-A **gcloud package** is an [NPM package] which bundles assets for Google Cloud Platform projects, such as Templates and Configurations for [Deployment Manager]. The `package.json` file MAY define additional metadata pertaining to Google Cloud Platform in the `"gcloud"` field.
+# GCloud Package Specification
+A **gcloud package** is an [NPM package] which bundles assets for projects intended to be deployed on Google Cloud Platform, such as Templates and/or Configurations for [Deployment Manager]. The `package.json` file of such packages MAY define additional metadata pertaining to Google Cloud Platform in the `"gcloud"` field.
 
 ## Terminology
 
@@ -14,10 +14,10 @@ The following fields within the optional `"gcloud"` section of `package.json` ha
 
 - `"project"`: A Google Cloud Platform project to deploy the Configuration into. If this field is present, its value must be a valid *PROJECT_ID*, regardless of whether the project itself currently exists.
 
-## Files
-A **gcloud package** must at the very least contain a single ..., besides `package.json`.
+## Templates and Configurations
+Configuration Packages MUST provide a top-level Configuration in the file `config.yaml`, describing a set of resources to deploy together. This Configuration can easily be deployed from the command line with `npm install && gcloud deployment-manager deployments create --config config.yaml`. It's should only matter that the `node_modules` directory is up-to-date before executing the `gcloud` command.
 
-Configuration Package provides a Deployment Manager Configuration in the file `config.yaml`. This file can be deployed from the command line with `gcloud deployment-manager deployments create --config config.yaml`.
+Template Packages MAY also have a `config.yaml` file, but they MUST provide one or more JSON, Jinja, and/or Python files to be used as a dependency in Configuration Packages, or other Template Packages.
 
 [Deployment Manager]: https://cloud.google.com/deployment-manager/docs/fundamentals
 [NPM package]: https://docs.npmjs.com/files/package.json
