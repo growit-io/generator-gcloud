@@ -15,7 +15,7 @@ The following fields within the optional `"gcloud"` section of `package.json` ha
 - `"project"`: A Google Cloud Platform project to deploy the Configuration into. If this field is present, its value must be a valid *PROJECT_ID*, regardless of whether the project itself currently exists.
 
 ## Templates and Configurations
-Configuration Packages MUST provide a top-level Configuration in the file `config.yaml`, describing a set of resources to deploy together. This Configuration can easily be deployed from the command line with `npm install && gcloud deployment-manager deployments create --config config.yaml`. It's should only matter that the `node_modules` directory is up-to-date before executing the `gcloud` command.
+Configuration Packages MUST provide a top-level Configuration in the file `config.yaml`, describing a set of resources to deploy together. This Configuration can easily be deployed from the command line with `npm install && gcloud deployment-manager deployments create --config config.yaml`. It should only matter that the `node_modules` directory is up-to-date, before executing the `gcloud` command.
 
 Template Packages MAY also have a `config.yaml` file, but they MUST provide one or more JSON, Jinja, and/or Python files to be used as a dependency in Configuration Packages, or other Template Packages.
 
