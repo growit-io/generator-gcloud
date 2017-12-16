@@ -8,7 +8,7 @@ function generator(config) {
   return helpers.run(path.join(__dirname, '../generators/app')).withPrompts(config);
 }
 
-describe('generator-gcloud:app', () => {
+describe('gcloud:app', () => {
   beforeAll(() => {
     return generator({});
   });
