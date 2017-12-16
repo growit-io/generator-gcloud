@@ -4,47 +4,35 @@ const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
-function generator(config) {
-  return helpers.run(path.join(__dirname, '../generators/app')).withPrompts(config);
+function generator(options) {
+  return helpers.run(path.join(__dirname, '../generators/app')).withOptions(options);
 }
 
 describe('gcloud:app', () => {
-  beforeAll(() => {
-    return generator({});
-  });
-
-  it('creates the required files', () => {
-    assert.file(['README.md']);
-    assert.file(['package.json']);
-    assert.file(['config.yaml']);
-    assert.file(['.yo-rc.json']);
-  });
-
-  describe('with cloudbuild:true', () => {
-    beforeAll(() => {
-      return generator({ cloudbuild: true });
+  describe('with default options', () => {
+    beforeEach(() => {
+      return generator({});
     });
 
-    it('creates .yo-rc.yml with cloudbuild:true', () => {
+    it('creates cloudbuild.yaml', () => {
       assert.file(['cloudbuild.yaml']);
-      assert.fileContent('.yo-rc.json', /generator-gcloud/);
-      assert.jsonFileContent('.yo-rc.json', {
-        'generator-gcloud': { cloudbuild: true }
-      });
+    });
+
+    it('creates other files', () => {
+      assert.file(['.yo-rc.json']);
+      assert.file(['README.md']);
+      assert.file(['package.json']);
+      assert.file(['config.yaml']);
     });
   });
 
-  describe('with cloudbuild:false', () => {
-    beforeAll(() => {
+  describe('with options {cloudbuild: false}', () => {
+    beforeEach(() => {
       return generator({ cloudbuild: false });
     });
 
-    it('creates .yo-rc.yml with cloudbuild:false', () => {
+    it('creates no cloudbuild.yaml', () => {
       assert.noFile(['cloudbuild.yaml']);
-      assert.fileContent('.yo-rc.json', /generator-gcloud/);
-      assert.jsonFileContent('.yo-rc.json', {
-        'generator-gcloud': { cloudbuild: false }
-      });
     });
   });
 });

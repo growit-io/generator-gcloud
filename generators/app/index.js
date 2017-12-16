@@ -1,76 +1,67 @@
 'use strict';
 const Generator = require('yeoman-generator');
-const chalk = require('chalk');
-const yosay = require('yosay');
-
-// The tty module provides isTTY on stdin and other streams
-require('tty');
-
-const prompts = [
-  {
-    type: 'confirm',
-    name: 'cloudbuild',
-    message: 'Would you like to generate a cloudbuild.yaml?',
-    default: true,
-    store: true
-  }
-];
+const _ = require('lodash');
 
 module.exports = class extends Generator {
+  constructor(args, opts) {
+    // Call the super constructor to set up our generator correctly
+    super(args, opts);
+
+    // Support --cloudbuild and --cloudbuild=true|false
+    this.option('cloudbuild', { description: 'write cloudbuild.yaml' });
+  }
+
   initializing() {
-    // Load .yo-rc.json.
-    this.config.getAll();
+    // Initialise properties to explicit options or configuration values
+    this.props = _.extend({}, this.config.getAll(), this.options);
+
+    // Add default values to the configuration
+    this.config.defaults({
+      cloudbuild: true
+    });
   }
 
   prompting() {
-    // Have Yeoman greet the user
-    this.log(yosay('Welcome to the ' + chalk.red('gcloud') + ' project generator!'));
-
-    // Prompt the user for answers if stdin is a terminal
-    if (process.stdin.isTTY) {
-      return this.prompt(prompts).then(props => {
-        // Save the answers
-        this.props = props;
-        for (var x in prompts) {
-          if (Object.prototype.hasOwnProperty.call(prompts, x)) {
-            var p = prompts[x];
-            this.config.set(p.name, this.props[p.name]);
-          }
-        }
-      });
-    }
+    // Only ask for undefined properties
+    let prompts = [];
+    [
+      {
+        type: 'confirm',
+        name: 'cloudbuild',
+        message: 'Would you like to generate a cloudbuild.yaml?'
+      }
+    ].forEach(prompt => {
+      if (this.props[prompt.name] === undefined) {
+        prompt.default = this.config.get(prompt.name);
+        prompts.push(prompt);
+      }
+    });
 
     // Otherwise, assume the default value for all answers
-    return this.prompt([]).then(props => {
-      this.props = props;
-      for (var x in prompts) {
-        if (Object.prototype.hasOwnProperty.call(prompts, x)) {
-          var p = prompts[x];
-          this.props[p.name] = p.default;
-          this.config.set(p.name, this.config.get(p.name));
-        }
-      }
+    return this.prompt(prompts).then(answers => {
+      this.props = answers;
     });
   }
 
   configuring() {
-    // Follow best practice to always generate a .yo-rc.json
-    this.config.save();
+    // Save properties that differ from the defaults
+    Object.keys(this.props).forEach(key => {
+      if (this.props[key] !== this.config.get(key)) {
+        this.config.set(key, this.props[key]);
+      }
+    });
   }
 
   writing() {
-    var files = ['README.md', 'package.json', 'config.yaml'];
+    const files = ['README.md', 'package.json', 'config.yaml'];
 
     if (this.props.cloudbuild) {
       files.push('cloudbuild.yaml');
     }
 
-    for (var x in files) {
-      if (Object.prototype.hasOwnProperty.call(files, x)) {
-        var name = files[x];
-        this.fs.copy(this.templatePath(name), this.destinationPath(name));
-      }
-    }
+    files.forEach(name => {
+      this.fs.copy(this.templatePath(name), this.destinationPath(name));
+    });
   }
 
   install() {
