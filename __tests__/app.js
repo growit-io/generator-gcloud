@@ -1,3 +1,4 @@
+/* global beforeAll, describe, it */
 'use strict';
 const path = require('path');
 const assert = require('yeoman-assert');
