@@ -2,7 +2,7 @@
 
 A [Yeoman] Generator for [Google Cloud Platform] projects. The source contains an [example] of what the resulting project will look like, if you accepted all the builtin defaults.
 
-## Quickstart
+## Quick Start
 
     npm install -g yo generator-gcloud
     yo gcloud
