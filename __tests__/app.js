@@ -1,12 +1,10 @@
-/* global beforeAll, describe, it */
+/* global beforeEach, describe, it */
 'use strict';
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
-function generator(options) {
-  return helpers.run(path.join(__dirname, '../generators/app')).withOptions(options);
-}
+const otherFiles = ['.yo-rc.json', 'README.md', 'config.yaml', 'package.json'];
 
 describe('gcloud:app', () => {
   describe('with default options', () => {
@@ -19,10 +17,7 @@ describe('gcloud:app', () => {
     });
 
     it('creates other files', () => {
-      assert.file(['.yo-rc.json']);
-      assert.file(['README.md']);
-      assert.file(['package.json']);
-      assert.file(['config.yaml']);
+      assert.file(otherFiles);
     });
   });
 
@@ -34,5 +29,13 @@ describe('gcloud:app', () => {
     it('creates no cloudbuild.yaml', () => {
       assert.noFile(['cloudbuild.yaml']);
     });
+
+    it('creates other files', () => {
+      assert.file(otherFiles);
+    });
   });
 });
+
+function generator(options) {
+  return helpers.run(path.join(__dirname, '../generators/app')).withOptions(options);
+}

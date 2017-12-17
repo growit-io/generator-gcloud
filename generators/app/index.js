@@ -7,7 +7,7 @@ module.exports = class extends Generator {
     // Call the super constructor to set up our generator correctly
     super(args, opts);
 
-    // Support --cloudbuild and --cloudbuild=true|false
+    // Support boolean options as --opt and --opt=true|false
     this.option('cloudbuild', { description: 'write cloudbuild.yaml' });
   }
 
@@ -15,14 +15,15 @@ module.exports = class extends Generator {
     // Initialise properties to explicit options or configuration values
     this.props = _.extend({}, this.config.getAll(), this.options);
 
-    // Add default values to the configuration
+    // Add default values to the configuration. Not all options have a
+    // configuration equivalent.
     this.config.defaults({
       cloudbuild: true
     });
   }
 
   prompting() {
-    // Only ask for undefined properties
+    // Prompt for undefined properties
     let prompts = [];
     [
       {
@@ -36,16 +37,14 @@ module.exports = class extends Generator {
         prompts.push(prompt);
       }
     });
-
-    // Otherwise, assume the default value for all answers
     return this.prompt(prompts).then(answers => {
-      this.props = answers;
+      _.extend(this.props, answers);
     });
   }
 
   configuring() {
-    // Save properties that differ from the defaults
-    Object.keys(this.props).forEach(key => {
+    // Save configuration options that differ from the defaults
+    Object.keys(this.config.getAll()).forEach(key => {
       if (this.props[key] !== this.config.get(key)) {
         this.config.set(key, this.props[key]);
       }
@@ -66,7 +65,9 @@ module.exports = class extends Generator {
 
   install() {
     this.installDependencies({
-      bower: false
+      npm: true,
+      bower: false,
+      yarn: false
     });
   }
 };
