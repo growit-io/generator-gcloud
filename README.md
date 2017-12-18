@@ -8,7 +8,7 @@ A [Yeoman] Generator for [Google Cloud Platform] projects. The source contains a
     yo gcloud
 
 ## Features
-- None.
+- Skip all prompts and accept defaults with `--yes` (useful for scripts) 
 
 ### Missing Features
 - Dynamic generation of `config.yaml`. Currently it's a static template.

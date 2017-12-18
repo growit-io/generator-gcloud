@@ -6,8 +6,7 @@ cd "$(dirname "$0")/.."
 
 dir=`mktemp -d`
 
-cp example/.yo-rc.json $dir
-(cd $dir && yo gcloud <&-)
+(cd $dir && yo gcloud --yes --skip-install)
 
 rm -Rf example
 cp -R $dir example

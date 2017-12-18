@@ -7,36 +7,56 @@ module.exports = class extends Generator {
     // Call the super constructor to set up our generator correctly
     super(args, opts);
 
-    // Support boolean options as --opt and --opt=true|false
-    this.option('cloudbuild', { description: 'write cloudbuild.yaml' });
+    // Boolean options are recognised as --opt and --opt=true|false
+    this.option('yes', {
+      description: 'Do not prompt and accept the default answers'
+    });
+
+    this.option('cloudbuild', {
+      description: 'write cloudbuild.yaml'
+    });
   }
 
   initializing() {
-    // Initialise properties to explicit options or configuration values
-    this.props = _.extend({}, this.config.getAll(), this.options);
+    // Initialise properties from options
+    this.props = _.extend({}, this.options);
 
-    // Add default values to the configuration. Not all options have a
-    // configuration equivalent.
+    // Fill undefined values with configuration values from .yo-rc.json
+    _.defaults(this.props, this.config.getAll());
+
+    // Set defaults values for configuration options which are not in
+    // .yo-rc.json, so that prompting has some default value available
     this.config.defaults({
       cloudbuild: true
     });
   }
 
   prompting() {
-    // Prompt for undefined properties
-    let prompts = [];
+    // Ask to confirm configuration values, but skip prompts for properties
+    // which were set from options. Skip all prompts if the --yes flag was
+    // used.
+    const prompts = [];
     [
       {
         type: 'confirm',
         name: 'cloudbuild',
-        message: 'Would you like to generate a cloudbuild.yaml?'
+        message: 'Would you like to generate cloudbuild.yaml?'
       }
     ].forEach(prompt => {
-      if (this.props[prompt.name] === undefined) {
-        prompt.default = this.config.get(prompt.name);
-        prompts.push(prompt);
+      const name = prompt.name;
+
+      if (this.options[name] === undefined) {
+        const defaultAnswer = this.config.get(name);
+
+        if (this.options.yes) {
+          this.props[name] = defaultAnswer;
+        } else {
+          prompt.default = defaultAnswer;
+          prompts.push(prompt);
+        }
       }
     });
+
     return this.prompt(prompts).then(answers => {
       _.extend(this.props, answers);
     });
