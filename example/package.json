@@ -1,14 +1,14 @@
 {
   "version": "0.0.0",
-  "description": "Deployment Manager configuration for a Google Cloud project",
+  "description": "Google Cloud Platform project",
   "dependencies": {
-    "@growit-io/gcloud-project": "0.1.x",
-    "@growit-io/google-cloud-platform-types": "0.2.x"
+    "@growit-io/gcloud-project": ">= 0.0.3",
+    "@growit-io/google-cloud-platform-types": ">= 0.2.5"
   },
   "scripts": {
     "project": "gcloud-project",
     "test": "gcloud-project test",
-    "cloudbuild": "gcloud-project test && gcloud-project deploy"
+    "cloudbuild": "npm run test && gcloud-project deploy"
   },
-  "keywords": []
+  "keywords": ["gcloud", "google-cloud-platform"]
 }
